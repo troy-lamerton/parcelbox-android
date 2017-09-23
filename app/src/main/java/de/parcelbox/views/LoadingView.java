@@ -6,19 +6,19 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import de.parcelbox.R;
 
 public class LoadingView extends LinearLayout {
 
     // view elements
-    private LinearLayout percentageBar;
+    private LinearLayout wrapper, percentageBar;
     private TextView percentageTxt, firstTxt, secondTxt, thirdTxt;
     private ImageView firstNoIv, firstYesIv, secondNoIv, secondYesIv, thirdNoIv, thirdYesIv;
 
@@ -44,6 +44,8 @@ public class LoadingView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+
+        wrapper = findViewById(R.id.loadingWrapper);
 
         // get the loading and success dot
         percentageBar = findViewById(R.id.loadingBar);
@@ -79,8 +81,8 @@ public class LoadingView extends LinearLayout {
     private void updateUi(Activity activity) {
         percentage++;
 
-        if (percentage > 100) {
-            percentage = 100;
+        if (percentage > 98) {
+            percentage = 98;
             handler.removeCallbacks(runnable);
             handler = null;
             return;
@@ -113,12 +115,33 @@ public class LoadingView extends LinearLayout {
                 }
             }
         });
+    }
 
+    public void fadeoutView() {
+
+        // create a fadeOut animation with interpolator and duration
+        final Animation fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setDuration(getResources().getInteger(R.integer.animation_speed_showhide));
+
+        // create handler w/ runnable for animation end
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                wrapper.setVisibility(GONE);
+            }
+        }, fadeOut.getDuration());
+
+        // start animation
+        wrapper.startAnimation(fadeOut);
     }
 
     public void reset() {
         percentage = 0;
         doneLoading = new boolean[]{false, false, false};
+
+        wrapper.setAlpha(1f);
+        wrapper.setVisibility(VISIBLE);
 
         firstTxt.setAlpha(0.6f);
         secondTxt.setAlpha(0.6f);

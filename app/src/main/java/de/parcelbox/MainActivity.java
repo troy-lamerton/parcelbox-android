@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (json != null && json.has("box-id")) {
                 int boxId = json.get("box-id").getAsInt();
                 boxManager.openDoor("Z", boxId);
+                restart();
             }
         }
 
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                countdownView.setVisibility(View.GONE);
+                loadingView.fadeoutView();
                 launchView.setVisibility(View.VISIBLE);
                 launchView.reset();
             }
