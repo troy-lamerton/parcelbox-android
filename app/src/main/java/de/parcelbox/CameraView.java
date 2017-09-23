@@ -11,6 +11,8 @@ import android.view.TextureView;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CameraView extends SurfaceView implements TextureView.SurfaceTextureListener {
 
@@ -27,39 +29,6 @@ public class CameraView extends SurfaceView implements TextureView.SurfaceTextur
         mTextureView = textureView;
         mTextureView.setSurfaceTextureListener(this);
     }
-
-    public void takePicture() {
-        if (safeToTakePicture) {
-            mCamera.takePicture(null, null, mPictureCallback);
-            safeToTakePicture = false;
-        }
-    }
-
-    Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
-        @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
-            FileOutputStream fos;
-            try {
-                camera.startPreview();
-
-                try {
-                    fos = new FileOutputStream("test.jpeg");
-                    fos.write(data);
-                    fos.close();
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-                //finished saving picture
-                safeToTakePicture = true;
-
-                Log.d("MAIN", "saved file");
-            } catch (IOException e) {
-                //do something about it
-            }
-        }
-    };
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
@@ -110,4 +79,45 @@ public class CameraView extends SurfaceView implements TextureView.SurfaceTextur
     public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
 
     }
+
+
+    public void takePicture() {
+        if (safeToTakePicture) {
+            mCamera.takePicture(null, null, mPictureCallback);
+            safeToTakePicture = false;
+        }
+    }
+
+    private String getUniqueFileName() {
+        SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
+        return s.format(new Date());
+    }
+
+    Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+            FileOutputStream fos;
+            try {
+                camera.startPreview();
+
+                try {
+                    Context context = mTextureView.getContext();
+                    fos = context.openFileOutput(getUniqueFileName(), Context.MODE_PRIVATE);
+                    fos.write(data);
+                    fos.close();
+
+                    Log.d("MAIN", "saved file");
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                //finished saving picture
+                safeToTakePicture = true;
+            } catch (IOException e) {
+                //do something about it
+            }
+        }
+    };
+
 }

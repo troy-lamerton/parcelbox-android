@@ -15,13 +15,20 @@ import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
 
 import de.parcelbox.manager.BoxManager;
 import de.parcelbox.manager.PubnubManager;
+import de.parcelbox.views.CountdownView;
+import de.parcelbox.views.LaunchView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
+        LaunchView.LaunchViewListener, CountdownView.CountdownViewListener {
 
     private CameraView mCameraView;
 
     private BoxManager boxManager;
     private PubnubManager pubnubManager;
+
+    // view elements
+    private LaunchView launchView;
+    private CountdownView countdownView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,19 +40,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // create CameraView and bind to the layout
         mCameraView = new CameraView(this);
-        TextureView camera_view = (TextureView) findViewById(R.id.camera_view);
-        mCameraView.setTextureView(camera_view);
-/*
-        Matrix matrix = new Matrix();
-        matrix.setScale(-1, 1);
-        matrix.postTranslate(500, 0);
-        mTextureView.setTransform(matrix);
-*/
-        // camera_view.setScaleX(-1);
+        mCameraView.setTextureView((TextureView) findViewById(R.id.camera_view));
 
-        // bind buttons with OCL
-        findViewById(R.id.takePicture).setOnClickListener(this);
-        findViewById(R.id.openDoor).setOnClickListener(this);
+        // get view elements
+        launchView = (LaunchView) findViewById(R.id.launchView);
+        launchView.setListener(this);
+
+        countdownView = (CountdownView) findViewById(R.id.countdownView);
+        countdownView.setListener(this);
     }
 
     @Override
@@ -63,15 +65,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.takePicture:
-                mCameraView.takePicture();
-                break;
-
-            case R.id.openDoor:
-                boxManager.openDoor("Z", 1);
-                break;
-        }
     }
 
     SubscribeCallback subscribeCallback = new SubscribeCallback() {
@@ -97,4 +90,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     };
+
+    @Override
+    public void onStartClicked() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                launchView.setVisibility(View.GONE);
+                countdownView.setVisibility(View.VISIBLE);
+                countdownView.startCountdown(MainActivity.this);
+            }
+        });
+    }
+
+    @Override
+    public void onCountdownExpired() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                countdownView.setVisibility(View.GONE);
+                launchView.setVisibility(View.VISIBLE);
+                launchView.reset();
+            }
+        });
+    }
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/launchWrapper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorOverlay"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="80dp"
+            android:gravity="center"
+            android:text="Get a free drink"
+            android:textColor="@color/colorAccent"
+            android:textSize="86sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/side_margin_double"
+            android:paddingLeft="@dimen/side_margin_double"
+            android:paddingRight="@dimen/side_margin_double"
+            android:paddingStart="@dimen/side_margin_double"
+            android:gravity="center"
+            android:text="Scan your face and get\na free drink that fits\nyour mood"
+            android:textColor="@android:color/white"
+            android:textSize="62sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/launchStartBtn"
+        style="@style/BoldButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="40dp"
+        android:paddingTop="40dp"
+        android:text="Get started" />
+
+</LinearLayout>

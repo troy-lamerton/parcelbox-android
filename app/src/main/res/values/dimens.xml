@@ -1,0 +1,58 @@
+<resources>
+
+    <dimen name="fontsizeSmall">28sp</dimen>
+    <dimen name="fontsizeDefault">32sp</dimen>
+    <dimen name="fontsizeLarge">92sp</dimen>
+    <dimen name="fontsizeTitle">62sp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="launcher_textbox_padding">33dp</dimen>
+
+    <!-- EditText values -->
+    <dimen name="edittext_paddingHor">15dp</dimen>
+    <dimen name="edittext_doublepaddingHor">32dp</dimen>
+    <dimen name="edittext_paddingVert">18dp</dimen>
+    <dimen name="edittext_marginHor">30dp</dimen>
+    <dimen name="edittext_marginVert">10dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin_double">32dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin_double">32dp</dimen>
+
+    <dimen name="bottomslider_inner_padding">6dp</dimen>
+    <dimen name="bottomslider_vertical_margin">35dp</dimen>
+    <dimen name="bottomslider_bottom_margin">65dp</dimen>
+
+
+    <dimen name="boldbutton_paddingHor">45dp</dimen>
+    <dimen name="boldbutton_paddingTop">22dp</dimen>
+    <dimen name="boldbutton_paddingBot">20dp</dimen>
+
+    <dimen name="shadow_height">8dp</dimen>
+    <dimen name="corner_radius">4dp</dimen>
+
+    <dimen name="switchMinWidth">55dp</dimen>
+
+    <dimen name="statefulTextViewPadding">15dp</dimen>
+
+    <dimen name="local_video_size_width">90dp</dimen>
+    <dimen name="local_video_size_height">120dp</dimen>
+    <dimen name="local_video_margin">8dp</dimen>
+
+    <!-- the default size of the dot used for the loading animation -->
+    <dimen name="ic_loadingcircle_size">36dp</dimen>
+    <!-- the maximum size of the dot is 1.5x of the default size -->
+    <dimen name="ic_loadingcircle_success_size">54dp</dimen>
+
+    <!-- offset for the qr code inside the event card -->
+    <dimen name="main_card_event_qrcodepadding_vert">8dp</dimen>
+    <dimen name="main_card_event_qrcodepadding_hor">32dp</dimen>
+
+    <!-- margin on the side of the TextViews - bigger on larger screens -->
+    <dimen name="side_margin">16dp</dimen>
+    <dimen name="side_margin_double">32dp</dimen>
+
+    <dimen name="edittext_corner_radius">3dp</dimen>
+</resources>

@@ -10,28 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <LinearLayout
+    <de.parcelbox.views.LaunchView
+        android:id="@+id/launchView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
+        android:layout_height="match_parent" />
 
-        <ImageButton
-            android:id="@+id/takePicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:drawable/ic_menu_camera"
-            android:padding="20dp" />
-
-        <ImageButton
-            android:id="@+id/openDoor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:drawable/ic_menu_crop"
-            android:padding="20dp" />
-
-    </LinearLayout>
+    <de.parcelbox.views.CountdownView
+        android:id="@+id/countdownView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 
 </FrameLayout>
