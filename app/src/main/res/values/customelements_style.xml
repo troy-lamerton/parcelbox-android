@@ -4,12 +4,10 @@
 
     <!-- ## BoldButton with colored background ## -->
     <style name="BoldButton" parent="@style/Base.Widget.AppCompat.Button.Borderless.Colored">
-        <item name="android:background">@drawable/bold_button_bg</item>
+        <item name="android:background">@drawable/ic_circle</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:paddingTop">@dimen/boldbutton_paddingTop</item>
-        <item name="android:paddingBottom">@dimen/boldbutton_paddingBot</item>
         <item name="android:textSize">@dimen/fontsizeLarge</item>
-        <item name="android:textAllCaps">false</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <!-- ## LightButton with transparent background ## -->

@@ -41,8 +41,8 @@
         style="@style/BoldButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="40dp"
-        android:paddingTop="40dp"
+        android:paddingBottom="0dp"
+        android:paddingTop="150dp"
         android:text="Get started" />
 
 </LinearLayout>

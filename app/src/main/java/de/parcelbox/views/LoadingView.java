@@ -81,8 +81,8 @@ public class LoadingView extends LinearLayout {
     private void updateUi(Activity activity) {
         percentage++;
 
-        if (percentage > 98) {
-            percentage = 98;
+        if (percentage > 99) {
+            percentage = 99;
             handler.removeCallbacks(runnable);
             handler = null;
             return;
