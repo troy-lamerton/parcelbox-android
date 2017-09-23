@@ -3,9 +3,8 @@ package de.parcelbox;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.TextureView;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 
 import com.google.gson.JsonObject;
 import com.pubnub.api.PubNub;
@@ -17,9 +16,9 @@ import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
 import de.parcelbox.manager.BoxManager;
 import de.parcelbox.manager.PubnubManager;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private CameraView mCameraView = null;
+    private CameraView mCameraView;
 
     private BoxManager boxManager;
     private PubnubManager pubnubManager;
@@ -34,24 +33,24 @@ public class MainActivity extends AppCompatActivity  {
 
         // create CameraView and bind to the layout
         mCameraView = new CameraView(this);
-        FrameLayout camera_view = (FrameLayout) findViewById(R.id.camera_view);
-        camera_view.addView(mCameraView);
+        TextureView camera_view = (TextureView) findViewById(R.id.camera_view);
+        mCameraView.setTextureView(camera_view);
+/*
+        Matrix matrix = new Matrix();
+        matrix.setScale(-1, 1);
+        matrix.postTranslate(500, 0);
+        mTextureView.setTransform(matrix);
+*/
+        // camera_view.setScaleX(-1);
 
-        // btn to close the application
-        ImageButton imgClose = (ImageButton) findViewById(R.id.imgClose);
-        imgClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boxManager.openDoor("Z", 1);
-            }
-        });
+        // bind buttons with OCL
+        findViewById(R.id.takePicture).setOnClickListener(this);
+        findViewById(R.id.openDoor).setOnClickListener(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        // register PubnubManager channel and callback
         pubnubManager.subscribe("parcelbox");
         pubnubManager.start(subscribeCallback);
     }
@@ -59,8 +58,20 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onPause() {
         pubnubManager.stop();
-
         super.onPause();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.takePicture:
+                mCameraView.takePicture();
+                break;
+
+            case R.id.openDoor:
+                boxManager.openDoor("Z", 1);
+                break;
+        }
     }
 
     SubscribeCallback subscribeCallback = new SubscribeCallback() {
@@ -75,7 +86,7 @@ public class MainActivity extends AppCompatActivity  {
 
             // try to get the box id out of the message and open the corresponding door
             JsonObject json = message.getMessage().getAsJsonObject();
-            if(json != null && json.has("box-id")) {
+            if (json != null && json.has("box-id")) {
                 int boxId = json.get("box-id").getAsInt();
                 boxManager.openDoor("Z", boxId);
             }

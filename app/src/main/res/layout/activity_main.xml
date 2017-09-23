@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <FrameLayout
+    <TextureView
         android:id="@+id/camera_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-    </FrameLayout>
-
-    <ImageButton
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/imgClose"
-        android:layout_gravity="right|top"
-        android:background="@android:drawable/ic_menu_close_clear_cancel"
-        android:padding="20dp"/>
+        android:layout_gravity="bottom">
+
+        <ImageButton
+            android:id="@+id/takePicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:drawable/ic_menu_camera"
+            android:padding="20dp" />
+
+        <ImageButton
+            android:id="@+id/openDoor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:drawable/ic_menu_crop"
+            android:padding="20dp" />
+
+    </LinearLayout>
+
 
 </FrameLayout>

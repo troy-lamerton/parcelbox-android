@@ -1,20 +1,68 @@
 package de.parcelbox;
 
 import android.content.Context;
+import android.graphics.Matrix;
+import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.util.Log;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.TextureView;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
+public class CameraView extends SurfaceView implements TextureView.SurfaceTextureListener {
 
-    private SurfaceHolder mHolder;
     private Camera mCamera;
+    private TextureView mTextureView;
+
+    private boolean safeToTakePicture = false;
 
     public CameraView(Context context) {
         super(context);
+    }
+
+    public void setTextureView(TextureView textureView) {
+        mTextureView = textureView;
+        mTextureView.setSurfaceTextureListener(this);
+    }
+
+    public void takePicture() {
+        if (safeToTakePicture) {
+            mCamera.takePicture(null, null, mPictureCallback);
+            safeToTakePicture = false;
+        }
+    }
+
+    Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+            FileOutputStream fos;
+            try {
+                camera.startPreview();
+
+                try {
+                    fos = new FileOutputStream("test.jpeg");
+                    fos.write(data);
+                    fos.close();
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                //finished saving picture
+                safeToTakePicture = true;
+
+                Log.d("MAIN", "saved file");
+            } catch (IOException e) {
+                //do something about it
+            }
+        }
+    };
+
+    @Override
+    public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
 
         try {
             mCamera = Camera.open();//you can use open(int) to use different cameras
@@ -26,49 +74,40 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
         // rotate camera correctly
         mCamera.setDisplayOrientation(90);
 
-        //get the holder and set this class as the callback, so we can get camera data here
-        mHolder = getHolder();
-        mHolder.addCallback(this);
-        mHolder.setType(SurfaceHolder.SURFACE_TYPE_NORMAL);
-    }
+        // flip the image
+        Matrix matrix = new Matrix();
+        matrix.setScale(-1, 1);
+        matrix.postTranslate(mTextureView.getWidth(), 0);
+        mTextureView.setTransform(matrix);
 
-    @Override
-    public void surfaceCreated(SurfaceHolder surfaceHolder) {
         try {
             // when the surface is created, we can set the camera to draw images in this surfaceholder
-            mCamera.setPreviewDisplay(surfaceHolder);
+            mCamera.setPreviewTexture(surfaceTexture);
             mCamera.startPreview();
+
+            safeToTakePicture = true;
         } catch (IOException e) {
             Log.d("ERROR", "Camera error on surfaceCreated " + e.getMessage());
         }
+
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i2, int i3) {
-        // before changing the application orientation, you need to stop the preview, rotate and then start it again
-        if (mHolder.getSurface() == null) //check if the surface is ready to receive camera data
-            return;
+    public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int i, int i1) {
 
-        try {
+    }
+
+    @Override
+    public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
+        if (mCamera != null) {
             mCamera.stopPreview();
-        } catch (Exception e) {
-            // trying the camera if it's not running
-            Log.d("ERROR", "Camera is not running " + e.getMessage());
+            mCamera.release();
         }
-
-        // now, recreate the camera preview
-        try {
-            mCamera.setPreviewDisplay(mHolder);
-            mCamera.startPreview();
-        } catch (IOException e) {
-            Log.d("ERROR", "Camera error on surfaceChanged " + e.getMessage());
-        }
+        return true;
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        // our app has only one screen, so we'll destroy the camera in the surface
-        mCamera.stopPreview();
-        mCamera.release();
+    public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
+
     }
 }
