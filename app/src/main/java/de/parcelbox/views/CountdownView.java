@@ -2,8 +2,10 @@ package de.parcelbox.views;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -12,22 +14,13 @@ import java.util.TimerTask;
 
 import de.parcelbox.R;
 
-
-/**
- * this is a view containing an intercepting wrapper, a loading indicator and a success icon
- * <p>
- * when used, the view is gone by default and can be showed by calling {@link this.showStateLoading}
- * this fades in the view and starts the animation.
- * <p>
- * when done, the view can be faded out with {@link this.triggerStopLoading} or with a success icon
- * by calling {@link this.triggerStopLoadingWithState}
- */
 public class CountdownView extends LinearLayout {
 
     // listener for surrounding views
     private CountdownViewListener listener;
 
     // view elements
+    private View flashView;
     private TextView countdownTxt;
     private int remainingTicks;
 
@@ -51,6 +44,7 @@ public class CountdownView extends LinearLayout {
 
         // get the loading and success dot
         countdownTxt = findViewById(R.id.countdownTxt);
+        flashView = findViewById(R.id.countdownFlash);
     }
 
     public void startCountdown(final Activity activity) {
@@ -68,8 +62,8 @@ public class CountdownView extends LinearLayout {
 
     private void updateUi(Activity activity) {
         remainingTicks--;
-        if (remainingTicks <= 0) {
-            notifyListener();
+        if (remainingTicks < 1) {
+            showFlash(activity);
             timer.cancel();
             return;
         }
@@ -78,6 +72,24 @@ public class CountdownView extends LinearLayout {
             @Override
             public void run() {
                 countdownTxt.setText(String.valueOf(remainingTicks));
+            }
+        });
+    }
+
+    private void showFlash(Activity activity) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                flashView.setVisibility(VISIBLE);
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        flashView.setVisibility(GONE);
+                        notifyListener();
+                    }
+                }, 100);
             }
         });
     }

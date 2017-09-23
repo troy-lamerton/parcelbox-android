@@ -15,16 +15,6 @@ import android.widget.LinearLayout;
 
 import de.parcelbox.R;
 
-
-/**
- * this is a view containing an intercepting wrapper, a loading indicator and a success icon
- * <p>
- * when used, the view is gone by default and can be showed by calling {@link this.showStateLoading}
- * this fades in the view and starts the animation.
- * <p>
- * when done, the view can be faded out with {@link this.triggerStopLoading} or with a success icon
- * by calling {@link this.triggerStopLoadingWithState}
- */
 public class LaunchView extends LinearLayout {
 
     // listener for surrounding views

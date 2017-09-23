@@ -16,11 +16,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="140dp"
             android:gravity="center"
-            android:text="Get a free drink"
+            android:text="Get a gift"
             android:textColor="@color/colorAccent"
-            android:textSize="86sp" />
+            android:textSize="120sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             android:paddingRight="@dimen/side_margin_double"
             android:paddingStart="@dimen/side_margin_double"
             android:gravity="center"
-            android:text="Scan your face and get\na free drink that fits\nyour mood"
+            android:text="Scan your face and get\na free awesome gift that fits\nyour style and mood"
             android:textColor="@android:color/white"
             android:textSize="62sp" />
 

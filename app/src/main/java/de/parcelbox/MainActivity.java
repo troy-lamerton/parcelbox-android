@@ -17,6 +17,7 @@ import de.parcelbox.manager.BoxManager;
 import de.parcelbox.manager.PubnubManager;
 import de.parcelbox.views.CountdownView;
 import de.parcelbox.views.LaunchView;
+import de.parcelbox.views.LoadingView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         LaunchView.LaunchViewListener, CountdownView.CountdownViewListener {
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // view elements
     private LaunchView launchView;
     private CountdownView countdownView;
+    private LoadingView loadingView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         countdownView = (CountdownView) findViewById(R.id.countdownView);
         countdownView.setListener(this);
+
+        loadingView = (LoadingView) findViewById(R.id.loadingView);
     }
 
     @Override
@@ -105,6 +109,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onCountdownExpired() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                countdownView.setVisibility(View.GONE);
+                loadingView.setVisibility(View.VISIBLE);
+                loadingView.startCountdown(MainActivity.this);
+            }
+        });
+    }
+
+    public void restart() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
