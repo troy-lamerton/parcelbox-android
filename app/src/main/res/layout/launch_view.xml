@@ -30,7 +30,7 @@
             android:paddingRight="@dimen/side_margin_double"
             android:paddingStart="@dimen/side_margin_double"
             android:gravity="center"
-            android:text="Scan your face and get\na free awesome gift that fits\nyour style and mood"
+            android:text="Scan your face and get a\nfree awesome gift that fits\nyour style and mood"
             android:textColor="@android:color/white"
             android:textSize="62sp" />
 
@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="0dp"
-        android:paddingTop="150dp"
+        android:paddingTop="130dp"
         android:text="Get started" />
 
 </LinearLayout>

@@ -106,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 countdownView.startCountdown(MainActivity.this);
             }
         });
+
+        mCameraView.takePicture();
     }
 
     @Override

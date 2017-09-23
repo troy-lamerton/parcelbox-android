@@ -4,15 +4,19 @@ import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.os.Environment;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.TextureView;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import de.parcelbox.manager.UploadManager;
 
 public class CameraView extends SurfaceView implements TextureView.SurfaceTextureListener {
 
@@ -96,17 +100,22 @@ public class CameraView extends SurfaceView implements TextureView.SurfaceTextur
     Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            FileOutputStream fos;
             try {
                 camera.startPreview();
 
                 try {
-                    Context context = mTextureView.getContext();
-                    fos = context.openFileOutput(getUniqueFileName(), Context.MODE_PRIVATE);
+                    String filename = getUniqueFileName();
+
+                    File file = new File(Environment.getExternalStorageDirectory() + "/" + filename + ".png");
+                    FileOutputStream fos = new FileOutputStream(file);
                     fos.write(data);
                     fos.close();
 
                     Log.d("MAIN", "saved file");
+
+                    new UploadManager().uploadImage(file);
+
+                    Log.d("MAIN", "uploaded file");
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
