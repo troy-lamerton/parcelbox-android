@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/launchWrapper"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix">
 
     <LinearLayout
         android:layout_width="240dp"
@@ -16,6 +18,7 @@
         android:orientation="vertical">
 
         <TextView
+            fontPath="fonts/CabinSketch-Bold.ttf"
             android:id="@+id/countdownTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

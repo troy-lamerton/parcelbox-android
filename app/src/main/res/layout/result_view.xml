@@ -9,7 +9,8 @@
     <ImageView
         android:id="@+id/resultIv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:contentDescription="@null" />
 
     <TextView
         android:id="@+id/resultTxt"
@@ -21,7 +22,6 @@
         android:lines="2"
         android:paddingBottom="24dp"
         android:paddingTop="24dp"
-        android:text="Enjoy your gift!"
         android:textColor="@android:color/white"
         android:textSize="45sp" />
 

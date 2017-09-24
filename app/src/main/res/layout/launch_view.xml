@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/launchWrapper"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorOverlay"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,6 +16,7 @@
         android:orientation="vertical">
 
         <TextView
+            fontPath="fonts/CabinSketch-Bold.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="140dp"
@@ -25,11 +28,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:paddingEnd="@dimen/side_margin_double"
             android:paddingLeft="@dimen/side_margin_double"
             android:paddingRight="@dimen/side_margin_double"
             android:paddingStart="@dimen/side_margin_double"
-            android:gravity="center"
             android:text="Take a photo and get a free\nawesome gift which fits\nyour style and mood"
             android:textColor="@android:color/white"
             android:textSize="62sp" />
@@ -39,6 +42,7 @@
     <Button
         android:id="@+id/launchStartBtn"
         style="@style/BoldButton"
+        fontPath="fonts/CabinSketch-Bold.ttf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="0dp"

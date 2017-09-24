@@ -1,5 +1,6 @@
 package de.parcelbox;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,10 +16,12 @@ import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
 
 import de.parcelbox.manager.BoxManager;
 import de.parcelbox.manager.PubnubManager;
+import de.parcelbox.views.CameraView;
 import de.parcelbox.views.CountdownView;
 import de.parcelbox.views.LaunchView;
 import de.parcelbox.views.LoadingView;
 import de.parcelbox.views.ResultView;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         LaunchView.LaunchViewListener, CountdownView.CountdownViewListener,
@@ -74,6 +77,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
     public void onClick(View view) {
     }
 
@@ -90,9 +98,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // try to get the box id out of the message and open the corresponding door
             JsonObject json = message.getMessage().getAsJsonObject();
             if (json != null && json.has("box-id") && json.has("result-url") && json.has("mood")) {
+
+                // open door by id
                 int boxId = json.get("box-id").getAsInt();
                 boxManager.openDoor("Z", boxId);
 
+                // update UI based on mood and result image
                 final String resultUrl = json.get("result-url").getAsString();
                 final String mood = json.get("mood").getAsString();
                 runOnUiThread(new Runnable() {
@@ -113,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
 
     @Override
+    // user clicked on the launch button on the LaunchView -> show the CountdownView
     public void onStartClicked() {
         runOnUiThread(new Runnable() {
             @Override
@@ -125,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    // the countdown on the CountdownView expired -> show the LoadingView
     public void onCountdownExpired() {
         runOnUiThread(new Runnable() {
             @Override
@@ -139,11 +152,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    // the countdown on the ResultView expired -> restart from the LaunchView
     public void onResultExpired() {
-        restart();
-    }
-
-    public void restart() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

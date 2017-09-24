@@ -2,7 +2,7 @@
 
     <dimen name="fontsizeSmall">28sp</dimen>
     <dimen name="fontsizeDefault">32sp</dimen>
-    <dimen name="fontsizeLarge">92sp</dimen>
+    <dimen name="fontsizeLarge">120sp</dimen>
     <dimen name="fontsizeTitle">62sp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
