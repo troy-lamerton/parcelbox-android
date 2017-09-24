@@ -1,6 +1,8 @@
 package de.parcelbox;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
@@ -105,10 +107,16 @@ public class CameraView extends SurfaceView implements TextureView.SurfaceTextur
 
                 try {
                     String filename = getUniqueFileName();
-
                     File file = new File(Environment.getExternalStorageDirectory() + "/" + filename + ".png");
+
+                    Bitmap bm = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(90);
+                    Bitmap rotatedBitmap = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
+
                     FileOutputStream fos = new FileOutputStream(file);
-                    fos.write(data);
+                    rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
                     fos.close();
 
                     Log.d("MAIN", "saved file");

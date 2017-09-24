@@ -89,17 +89,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // try to get the box id out of the message and open the corresponding door
             JsonObject json = message.getMessage().getAsJsonObject();
-            if (json != null && json.has("box-id") && json.has("result-url")) {
+            if (json != null && json.has("box-id") && json.has("result-url") && json.has("mood")) {
                 int boxId = json.get("box-id").getAsInt();
                 boxManager.openDoor("Z", boxId);
 
                 final String resultUrl = json.get("result-url").getAsString();
+                final String mood = json.get("mood").getAsString();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         countdownView.setVisibility(View.GONE);
                         resultView.setVisibility(View.VISIBLE);
-                        resultView.init(resultUrl, MainActivity.this);
+                        resultView.init(resultUrl, mood, MainActivity.this);
                     }
                 });
             }
@@ -121,8 +122,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 countdownView.startCountdown(MainActivity.this);
             }
         });
-
-        mCameraView.takePicture();
     }
 
     @Override
@@ -135,6 +134,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 loadingView.startCountdown(MainActivity.this);
             }
         });
+
+        mCameraView.takePicture();
     }
 
     @Override

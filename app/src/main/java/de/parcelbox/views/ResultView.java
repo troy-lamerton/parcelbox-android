@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -21,6 +22,7 @@ public class ResultView extends LinearLayout {
     // view elements
     private FrameLayout wrapper;
     private ImageView resultIv;
+    private TextView resultTxt;
 
     private Handler handler;
     private Runnable runnable;
@@ -45,11 +47,14 @@ public class ResultView extends LinearLayout {
         super.onFinishInflate();
         wrapper = findViewById(R.id.resultWrapper);
         resultIv = findViewById(R.id.resultIv);
+        resultTxt = findViewById(R.id.resultTxt);
     }
 
-    public void init(String imageUrl, final Activity activity) {
+    public void init(String imageUrl, String mood, final Activity activity) {
 
         reset();
+
+        resultTxt.setText("You look " + mood + "!\nEnjoy your gift!");
 
         Picasso.with(activity)
                 .load(imageUrl)
@@ -65,7 +70,7 @@ public class ResultView extends LinearLayout {
                 notifyListener();
             }
         };
-        handler.postDelayed(runnable, 10000);
+        handler.postDelayed(runnable, 15000);
     }
 
 

@@ -75,11 +75,11 @@ public class LoadingView extends LinearLayout {
                 updateUi(activity);
             }
         };
-        handler.postDelayed(runnable, 1000);
+        handler.postDelayed(runnable, 200);
     }
 
     private void updateUi(Activity activity) {
-        percentage++;
+        percentage += 2 + (int) (Math.random() * 5);
 
         if (percentage > 99) {
             percentage = 99;
@@ -88,7 +88,7 @@ public class LoadingView extends LinearLayout {
             return;
         }
 
-        handler.postDelayed(runnable, 80 + (int) (Math.random() * 60));
+        handler.postDelayed(runnable, 10 + (int) (Math.random() * 10));
 
         activity.runOnUiThread(new Runnable() {
             @Override
