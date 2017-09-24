@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">ParcelBox</string>
+
+    <string name="lets_start">"&gt; Let's start &lt;"</string>
+    <string name="get_gift">"Get a gift"</string>
+    <string name="description">"Take a photo and get an\nawesome gift which fits\nyour style and mood"</string>
+    <string name="analyzing_mood">"Analyzing mood"</string>
+    <string name="task1">"Locating Head and Face"</string>
+    <string name="task2">"Detecting Eyes, Mouth and Hat"</string>
+    <string name="task3">"Reading Mood and Mind"</string>
+    <string name="task4">"Getting ready to display data"</string>
 </resources>

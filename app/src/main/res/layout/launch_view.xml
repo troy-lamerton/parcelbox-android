@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="140dp"
             android:gravity="center"
-            android:text="Get a gift"
+            android:text="@string/get_gift"
             android:textColor="@color/colorAccent"
             android:textSize="120sp" />
 
@@ -33,7 +33,7 @@
             android:paddingLeft="@dimen/side_margin_double"
             android:paddingRight="@dimen/side_margin_double"
             android:paddingStart="@dimen/side_margin_double"
-            android:text="Take a photo and get a free\nawesome gift which fits\nyour style and mood"
+            android:text="@string/description"
             android:textColor="@android:color/white"
             android:textSize="62sp" />
 
@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="0dp"
-        android:paddingTop="130dp"
-        android:text="Let's start" />
+        android:paddingTop="110dp"
+        android:text="@string/lets_start" />
 
 </LinearLayout>

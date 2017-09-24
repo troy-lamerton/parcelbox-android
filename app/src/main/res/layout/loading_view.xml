@@ -38,7 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
             android:gravity="center"
-            android:text="0 %"
             fontPath="fonts/CabinSketch-Bold.ttf"
             android:textColor="@color/colorAccent"
             android:textSize="86sp" />
@@ -48,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="80dp"
             android:gravity="center"
-            android:text="Analyzing mood"
+            android:text="@string/analyzing_mood"
             android:textColor="@color/colorAccent"
             android:textSize="60sp" />
 
@@ -66,7 +65,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Locating Head and Face"
+                android:text="@string/task1"
                 android:textColor="@android:color/white"
                 android:textSize="45sp" />
 
@@ -103,7 +102,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Detecting Eyes, Mouth and Hat"
+                android:text="@string/task2"
                 android:textColor="@android:color/white"
                 android:textSize="45sp" />
 
@@ -140,7 +139,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Reading Mood and Mind"
+                android:text="@string/task3"
                 android:textColor="@android:color/white"
                 android:textSize="45sp" />
 
@@ -177,7 +176,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:alpha="0.6"
-                android:text="Getting ready to display data"
+                android:text="@string/task4"
                 android:textColor="@android:color/white"
                 android:textSize="45sp" />
 
