@@ -25,6 +25,7 @@ public class CameraView extends SurfaceView implements TextureView.SurfaceTextur
     private Camera mCamera;
     private TextureView mTextureView;
 
+    // flag to prevent multiple pictures to be taken at the same time
     private boolean safeToTakePicture = false;
 
     public CameraView(Context context) {
@@ -39,8 +40,9 @@ public class CameraView extends SurfaceView implements TextureView.SurfaceTextur
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
 
+        // get the camera from the system
         try {
-            mCamera = Camera.open();//you can use open(int) to use different cameras
+            mCamera = Camera.open();
         } catch (Exception e) {
             Log.d("ERROR", "Failed to get camera: " + e.getMessage());
             return;
@@ -119,11 +121,7 @@ public class CameraView extends SurfaceView implements TextureView.SurfaceTextur
                     rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
                     fos.close();
 
-                    Log.d("MAIN", "saved file");
-
-                    new UploadManager().uploadImage(file);
-
-                    Log.d("MAIN", "uploaded file");
+                    new UploadManager().uploadImage(file, filename);
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();

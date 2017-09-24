@@ -33,5 +33,10 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
+    <View
+        android:id="@+id/resetBtn"
+        android:layout_width="match_parent"
+        android:layout_height="120dp" />
+
 
 </FrameLayout>

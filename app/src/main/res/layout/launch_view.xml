@@ -47,6 +47,6 @@
         android:layout_height="wrap_content"
         android:paddingBottom="0dp"
         android:paddingTop="130dp"
-        android:text="Get started" />
+        android:text="Let's start" />
 
 </LinearLayout>

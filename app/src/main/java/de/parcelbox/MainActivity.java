@@ -16,6 +16,7 @@ import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
 
 import de.parcelbox.manager.BoxManager;
 import de.parcelbox.manager.PubnubManager;
+import de.parcelbox.manager.UploadManager;
 import de.parcelbox.views.CameraView;
 import de.parcelbox.views.CountdownView;
 import de.parcelbox.views.LaunchView;
@@ -23,9 +24,8 @@ import de.parcelbox.views.LoadingView;
 import de.parcelbox.views.ResultView;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-        LaunchView.LaunchViewListener, CountdownView.CountdownViewListener,
-        ResultView.ResultViewListener {
+public class MainActivity extends AppCompatActivity implements LaunchView.LaunchViewListener,
+        CountdownView.CountdownViewListener, ResultView.ResultViewListener {
 
     private CameraView mCameraView;
 
@@ -61,6 +61,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         resultView = (ResultView) findViewById(R.id.resultView);
         resultView.setListener(this);
+
+        // reset button
+        findViewById(R.id.resetBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reset();
+            }
+        });
     }
 
     @Override
@@ -81,14 +89,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    @Override
-    public void onClick(View view) {
-    }
-
     SubscribeCallback subscribeCallback = new SubscribeCallback() {
         @Override
         public void status(PubNub pubnub, PNStatus status) {
-
+            // we don't care for this here
         }
 
         @Override
@@ -97,19 +101,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // try to get the box id out of the message and open the corresponding door
             JsonObject json = message.getMessage().getAsJsonObject();
-            if (json != null && json.has("box-id") && json.has("result-url") && json.has("mood")) {
+            if (json != null && json.has("box-id") && json.has("filename") && json.has("mood")) {
 
                 // open door by id
                 int boxId = json.get("box-id").getAsInt();
                 boxManager.openDoor("Z", boxId);
 
                 // update UI based on mood and result image
-                final String resultUrl = json.get("result-url").getAsString();
+                final String filename = json.get("filename").getAsString();
+                final String resultUrl = UploadManager.BASE_URL + "/image/" + filename;
                 final String mood = json.get("mood").getAsString();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         countdownView.setVisibility(View.GONE);
+                        loadingView.setVisibility(View.GONE);
                         resultView.setVisibility(View.VISIBLE);
                         resultView.init(resultUrl, mood, MainActivity.this);
                     }
@@ -119,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void presence(PubNub pubnub, PNPresenceEventResult presence) {
-
+            // we don't care for this here
         }
     };
 
@@ -134,6 +140,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 countdownView.startCountdown(MainActivity.this);
             }
         });
+
+        boxManager.setLampStatus(true);
     }
 
     @Override
@@ -157,10 +165,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                loadingView.fadeoutView();
                 launchView.setVisibility(View.VISIBLE);
                 launchView.reset();
+
+                boxManager.setLampStatus(false);
             }
         });
+    }
+
+    // restart from the LaunchView
+    private void reset() {
+        countdownView.setVisibility(View.GONE);
+        loadingView.setVisibility(View.GONE);
+        resultView.setVisibility(View.GONE);
+        launchView.setVisibility(View.VISIBLE);
+        launchView.reset();
+
+        boxManager.setLampStatus(false);
     }
 }

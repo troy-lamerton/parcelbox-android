@@ -18,23 +18,25 @@ import retrofit2.http.Part;
 
 public class UploadManager {
 
+    public static final String BASE_URL = "http://172.16.2.231:5000";
+
     interface Service {
         @Multipart
         @POST("/")
         Call<ResponseBody> postImage(@Part MultipartBody.Part image);
     }
 
-    public void uploadImage(File image) {
+    public void uploadImage(File image, String filename) {
         Log.d("UPLOAD", "upload start");
 
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/jpg"), image);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("pic", "pic.jpg", reqFile);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("pic", filename, reqFile);
 
         Log.d("UPLOAD", "upload file: " + image.getAbsolutePath());
 
         // start the API call
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://172.16.2.231:5000")
+                .baseUrl(BASE_URL)
                 .build();
 
         Service service = retrofit.create(Service.class);
