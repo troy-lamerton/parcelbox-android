@@ -26,6 +26,8 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.+'
     compile group: 'com.pubnub', name: 'pubnub-gson', version: '4.10.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
 
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.0.1'

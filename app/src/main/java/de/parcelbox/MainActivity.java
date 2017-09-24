@@ -18,9 +18,11 @@ import de.parcelbox.manager.PubnubManager;
 import de.parcelbox.views.CountdownView;
 import de.parcelbox.views.LaunchView;
 import de.parcelbox.views.LoadingView;
+import de.parcelbox.views.ResultView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-        LaunchView.LaunchViewListener, CountdownView.CountdownViewListener {
+        LaunchView.LaunchViewListener, CountdownView.CountdownViewListener,
+        ResultView.ResultViewListener {
 
     private CameraView mCameraView;
 
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LaunchView launchView;
     private CountdownView countdownView;
     private LoadingView loadingView;
+    private ResultView resultView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +55,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         countdownView.setListener(this);
 
         loadingView = (LoadingView) findViewById(R.id.loadingView);
+
+        resultView = (ResultView) findViewById(R.id.resultView);
+        resultView.setListener(this);
     }
 
     @Override
@@ -83,10 +89,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // try to get the box id out of the message and open the corresponding door
             JsonObject json = message.getMessage().getAsJsonObject();
-            if (json != null && json.has("box-id")) {
+            if (json != null && json.has("box-id") && json.has("result-url")) {
                 int boxId = json.get("box-id").getAsInt();
                 boxManager.openDoor("Z", boxId);
-                restart();
+
+                final String resultUrl = json.get("result-url").getAsString();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        countdownView.setVisibility(View.GONE);
+                        resultView.setVisibility(View.VISIBLE);
+                        resultView.init(resultUrl, MainActivity.this);
+                    }
+                });
             }
         }
 
@@ -120,6 +135,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 loadingView.startCountdown(MainActivity.this);
             }
         });
+    }
+
+    @Override
+    public void onResultExpired() {
+        restart();
     }
 
     public void restart() {
